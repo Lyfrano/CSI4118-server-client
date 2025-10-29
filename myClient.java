@@ -9,8 +9,8 @@ import java.util.Scanner;
 
 public class myClient {
 
-    public static String serverAddress = "10.0.0.152"; // Server address
-    public static int port = 12345; // Server port
+    public static String serverAddress; // Server address
+    public static int port; // Server port
     public static Socket socket = null;
     public static InputStream inputStream = null;
     
@@ -19,12 +19,11 @@ public class myClient {
         try {
             serverAddress = args[0];} 
         catch(Exception e){
-            System.out.println("Using default server address" + serverAddress);}
-        try {
+            System.out.println("Server Adress Error"); }
+        try {       
         port = Integer.valueOf(args[1]);} 
         catch(Exception e){
-            System.out.println("Using default port 12345");}
-
+            System.out.println("Server Port Error");}
         try {
             // Create a socket to connect to the server
             socket = new Socket(serverAddress, port);
