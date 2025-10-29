@@ -48,6 +48,12 @@ public class myClient {
             
             if (command.equals("CSI4118 type4")) {
                 try {
+                    try{
+                        socket.getOutputStream().write((command + "\n").getBytes());
+                    } catch(Exception e){
+                        e.printStackTrace();
+                    }
+
                     try {
                         inputStream = socket.getInputStream();
                         BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
