@@ -49,13 +49,17 @@ public class myServer {
 
             while (true) {
                 // Accept a client connection
-                
+                if(clientSocket.isClosed()){
+                    clientSocket = serverSocket.accept();
+                    System.out.println("New client connected: " + clientSocket.getInetAddress().getHostAddress());
+                }
 
                 inputStream = clientSocket.getInputStream();
                 BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
                 command = in.readLine(); // Read a line of text
-
-                parsedCommand = command.split(" ");
+                try{
+                parsedCommand = command.split(" ");}
+                catch(Exception e){continue;}
                 System.out.println("Received command: " + command);
                 addtoLog("Received command from : " + clientSocket.getInetAddress() + " contents " + command);
 
@@ -119,6 +123,8 @@ public class myServer {
                     System.out.println("Handling type4 command");
                     try{
                     clientSocket.getOutputStream().write(("BYE" + "\n").getBytes());
+                    clientSocket.close();
+                    System.out.println("Client Disconnected");
                     } catch(Exception e){
                      e.printStackTrace();
                     }
@@ -140,10 +146,10 @@ public class myServer {
     public static String decodeString(String input) {
         char[] caesar = input.toCharArray();
         for (int i = 0; i < caesar.length; i++) {
-            caesar[i] = (char) (caesar[i] - cypher);
+            caesar[i] = (char) ((int)(caesar[i]) - cypher)  ;
         }
 
-        return "";
+        return new String(caesar);
     }
 
     public static void addtoLog(String logEntry) {
@@ -152,7 +158,7 @@ public class myServer {
             fw.write(logEntry + "\n");
             fw.close();
         } catch (IOException e) {
-            System.err.println("Error writing to log file: " + e.getMessage());
+            System.out.println("Error writing to log file: " + e.getMessage());
         }
     }
 }
